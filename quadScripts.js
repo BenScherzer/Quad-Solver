@@ -56,11 +56,13 @@ function grid() {
 }  //close grid
 
 function QF() {
-  // getting values to do quadratic formula
+  // getting values to do quadratic formulad
   a = $("#quadA").val();
   b = $("#linB").val();
   c = $("#constant").val();
   context.clearRect(0,0,w,h);
+  $("#answers").hide();
+  $("#answers").show();
   solutions();
   resestCanvas();
 
@@ -68,10 +70,10 @@ function QF() {
 
 function results() {
   // finding vertex and displaying symline and yint results
-  context.fillStyle="white";
+  context.fillStyle="black";
   vX = -(b*1)/(2*a);
   vY = a*Math.pow(vX,2)+b*vX+c*1;
-  $("#yInt").text("y int is at (0,"+c+")");
+  $("#yInt").text("The Y intercept is at (0,"+c+")");
   $("#answers").show();
   console.log(vX,vY);
   $("#vertex").text("Vertex is at (" + vX+","+vY+")");
@@ -79,13 +81,18 @@ function results() {
   context.beginPath();
   context.arc(w/2+vX*k,h/2-vY*k,5,0,6.28);
   context.fill();
+  context.strokeStyle="black";
+  context.beginPath();
+  context.setLineDash([k,k]);
+  context.moveTo(w/2+vX*k, 0);
+  context.lineTo(w/2+vX*k, h);
+  context.stroke();0
+  context.setLineDash([k,0]);
 
 }  // close results()
 
 function solutions() {
   // qudratic formula
-  $("#answers").hide();
-  $("#answers").show();
   d = Math.pow(b*1,2)-4*a*c;
   if (d<0) {
     $("#solution1").text("The solutions are imaginary (no x-intercepts).");
@@ -131,8 +138,12 @@ function zoomIn() {
 
 }  // end zoomIN
 function zoomOut() {
-x= k - 2;
-  resestCanvas();
+  if (k>4) {
+    k= k - 2;
+   resestCanvas();
+ }
+
+ 
 }  // end zoomOut
 function resestCanvas(){
   context.clearRect(0,0,w,h);
