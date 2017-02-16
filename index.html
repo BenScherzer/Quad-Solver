@@ -1,0 +1,136 @@
+<!--   Polynomial graphing application for soft dev class. Updated 2017.
+  Using bootstrap 3, we will try to keep responsive features to be used on mobile device -->
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Quadratic Grapher</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- styles to override bootstrap settings or add our own styles -->
+    <script type="text/javascript" src="quadScripts.js" ></script>
+    <style>
+      /* Set gray background color and 100% height */
+      .body{
+        background-color: #6BA3FF;
+      }
+      .sidenav {
+        height: 100%;
+        min-width: 180px;
+        max-width: 600px;
+        color: white; 
+      }
+      /* On small screens, set height to 'auto' for sidenav and grid */
+      @media screen and (max-width: 767px) {
+
+      }
+        .sidenav {
+          height: auto;
+          padding: 15px;
+        }
+        .btn{
+          width:80%;
+          min-width:100px;
+          color:black;
+        }
+        .row.content {
+          height:auto; 
+      }
+      .coeff, #answers {
+        width: 80%;
+        background-color: #1D4A99;
+        padding: 10px;
+        border-radius: 20px;
+      }
+      #answers{
+          }
+      #answersText{
+        color: black;
+        margin-right: auto;
+        margin-left: auto;
+
+      }
+
+      canvas {
+        display: block;
+        border-style: dotted;
+        border-width: 5px;
+        background-color: lightblue;
+        margin-top: 5px;  
+        width: 80%; 
+        min-width: 180px;
+        max-width: 600px;
+      }
+      .formInfo{
+        color:#000;
+      }
+      .btnsmall{
+        width: 150px;
+      }
+      .answerWords{
+        margin-right: auto;
+        margin-left: auto;
+      }
+    </style>
+
+  </head>
+  <body onload="init()">
+   <!--  Nav bar that is responsive (container-fluid with data-toggle at collapse) -->
+   <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="#">Math Solutions</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Quadratic Grapher</a></li>
+          <li><a href="#3">Cubic Grapher</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--    our main body of divs that are responsive (go from in-line to block when screen is small) -->
+  <div class="container-fluid">    
+    <div class="row content">
+      <div class="col-sm-4 sidenav">
+        <div class="coeff">
+          <p class="formInfo">Coefficients go here<br>
+
+            a = <input size="5" type="text" id="quadA" value="1"> <br>
+            b = <input size="5" type="text" id="linB" value="0"> <br>
+            c = <input size="5" type="text" id="constant" value="0"> <br>
+          </p>
+          <button class="btn" onclick="QF()">Submit Values</button>
+        </div>  <!-- close coeff div -->
+        <div id="answers">
+        <div id="answersText">
+          <p id="vertex" class="AnswerWords"> </p>
+          <p id="yInt" class="AnswerWords"> </p>
+          <p id="solution1" class="AnswerWords"> </p>
+          <p id="solution2" class="AnswerWords"> </p>
+          <p id="point" class="AnswerWords"> </p>
+          </div>
+          <button type="button" class="btn btnsmall" onclick="zoomIn()">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+          <button type="button" class="btn btnsmall" onclick="zoomOut()">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+          
+        </div>
+      </div>
+      <div class="col-sm-8"> 
+        <canvas class="canvasGrids" id="mycanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
