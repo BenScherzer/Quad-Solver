@@ -157,4 +157,4 @@ function doMouseMove(event) {
     context.fill(); 
     $("#point").text("Point on the curve: ("+pointX+","+pointY+")");
 
-}  // end doMouseMove
+}  // end doMouseMov
