@@ -76,7 +76,7 @@ function results() {
   $("#yInt").text("The Y intercept is at (0,"+c+")");
   $("#answers").show();
   console.log(vX,vY);
-  $("#vertex").text("Vertex is at (" + vX+","+vY+")");
+  $("#vertex").text("The vertex is at (" + vX+","+vY+")");
   $("#vertexForm").text("Vertex Form is y = "+a+"(x-"+vX+")^2 + "+vY);
   context.beginPath();
   context.arc(w/2+vX*k,h/2-vY*k,5,0,6.28);
@@ -96,16 +96,26 @@ function solutions() {
   d = Math.pow(b*1,2)-4*a*c;
   if (d<0) {
     $("#solution1").text("The solutions are imaginary (no x-intercepts).");
-
+    $("#rootText").text("");
+    $("#solution2").text("");
   }
   else{
     // the quadratic formula needs to be typed before assiging x1 and x2
     x1 = (-1*b+d**.5)/(2*a);
     x2 = (-1*b-d**.5)/(2*a);
-    x1 = Math.round(x1,3);
-    x2 = Math.round(x2,3);
-    $("#solution1").text("x = " + x1);
-    $("#solution2").text("x = " + x2);
+    x1 = x1.toFixed(1);
+    x2 = x2.toFixed(1);
+    console.log(x1,x2);
+    if (x1 = x2) {
+      $("#rootText").text("The root is:");
+      $("#solution1").text("x = " + x1);
+      $("#solution2").text("");
+    }
+    else{
+      $("#rootText").text("The roots are:");
+      $("#solution1").text("x = " + x1);
+      $("#solution2").text("x = " + x2);
+    }
     context.fillStyle="pink";
     context.beginPath();
     context.arc(w/2+x1*k,h/2,5,0,6.28);
