@@ -81,6 +81,10 @@ function results() {
   context.beginPath();
   context.arc(w/2+vX*k,h/2-vY*k,5,0,6.28);
   context.fill();
+  context.fillStyle="purple";
+  context.beginPath();
+  context.arc(w/2,h/2-c*k,5,0,6.28);
+  context.fill();
   context.strokeStyle="black";
   context.beginPath();
   context.setLineDash([k,k]);
@@ -106,7 +110,7 @@ function solutions() {
     x1 = x1.toFixed(1);
     x2 = x2.toFixed(1);
     console.log(x1,x2);
-    if (x1 = x2) {
+    if (x1 == x2) {
       $("#rootText").text("The root is:");
       $("#solution1").text("x = " + x1);
       $("#solution2").text("");
