@@ -1,185 +1,137 @@
-  var a, b, c, context, w, h, k=10;
+<!--   Polynomial graphing application for soft dev class. Updated 2017.
+  Using bootstrap 3, we will try to keep responsive features to be used on mobile device -->
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <title>Quadratic Grapher</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- styles to override bootstrap settings or add our own styles -->
+    <script type="text/javascript" src="quadScripts.js" ></script>
+    <style>
+      /* Set gray background color and 100% height */
+      .body{
+        background-color: #6BA3FF;
+      }
+      .sidenav {
+        height: 100%;
+        min-width: 180px;
+        max-width: 600px;
+        color: white; 
+      }
+      /* On small screens, set height to 'auto' for sidenav and grid */
+      @media screen and (max-width: 767px) {
 
-function init() {
-  canvas= document.getElementById("mycanvas");
-  context = canvas.getContext("2d");
-  w = canvas.width = 600;
-  h = canvas.height = 400;
-  console.log('canvas is loaded into context');
-  grid();
-  $("#answers").hide();
-  canvasOffset = $("#mycanvas").offset();
-  offsetX = Math.round(canvasOffset.left),
-  offsetY = Math.round(canvasOffset.top); 
-  canvas.addEventListener("mousemove", doMouseMove, false);
-}  // close init
+      }
+        .sidenav {
+          height: auto;
+          padding: 15px;
+        }
+        .btn{
+          width:80%;
+          min-width:100px;
+          color:black;
+        }
+        .row.content {
+          height:auto; 
+      }
+      .coeff, #answers {
+        width: 80%;
+        background-color: #1D4A99;
+        padding: 10px;
+        border-radius: 20px;
+      }
+      #answers{
+          }
+      #answersText{
+        color: black;
+        margin-right: auto;
+        margin-left: auto;
 
-function grid() {
-  // thin line with a 40% opacity using rgba() 
-  context.lineWidth=1;
-  context.strokeStyle="rgba(0,0,255,.5)";
+      }
 
-    //using the direct variation constant, k
-    //  here are the vertical and horizontal lines
-    
-    for (i=0; i<h/(2*k); i++) {
-      context.beginPath();
-      context.moveTo( 0, h/2-i*k );
-      context.lineTo( w, h/2-i*k );
-      context.stroke();
-      context.beginPath();
-      context.moveTo( 0, h/2+i*k );
-      context.lineTo( w, h/2+i*k );
-      context.stroke();
-    }
-    for (i=0; i<w/(2*k); i++) {
-      context.beginPath();
-      context.moveTo(w/2-i*k, 0);
-      context.lineTo(w/2-i*k, h);
-      context.stroke();
-      context.beginPath();
-      context.moveTo(w/2+i*k, 0);
-      context.lineTo(w/2+i*k, h);
-      context.stroke();
-    }
+      canvas {
+        display: block;
+        border-style: dotted;
+        border-width: 5px;
+        background-color: lightblue;
+        margin-top: 5px;  
+        width: 80%; 
+        min-width: 180px;
+        max-width: 600px;
+      }
+      .formInfo{
+        color:#000;
+      }
+      .btnsmall{
+        width: 150px;
+      }
+      .answerWords{
+        margin-right: auto;
+        margin-left: auto;
+      }
+    </style>
 
-    // draw the axes
-    context.lineWidth=3;
-    context.beginPath();
-    context.moveTo(w/2, 10);
-    context.lineTo(w/2, h-10)
-    context.stroke();
-    context.beginPath();
-    context.moveTo(10, h/2);
-    context.lineTo(w-10, h/2)
-    context.stroke();
-}  //close grid
+  </head>
+  <body onload="init()">
+   <!--  Nav bar that is responsive (container-fluid with data-toggle at collapse) -->
+   <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>                        
+        </button>
+        <a class="navbar-brand" href="#">Math Solutions</a>
+      </div>
+      <div class="collapse navbar-collapse" id="myNavbar">
+        <ul class="nav navbar-nav">
+          <li class="active"><a href="#">Quadratic Grapher</a></li>
+          <li><a href="#3">Cubic Grapher</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-function QF() {
-  // getting values to do quadratic formulad
-  a = $("#quadA").val();
-  b = $("#linB").val();
-  c = $("#constant").val();
-  context.clearRect(0,0,w,h);
-  $("#answers").hide();
-  $("#answers").show();
-  solutions();
-  resestCanvas();
+  <!--    our main body of divs that are responsive (go from in-line to block when screen is small) -->
+  <div class="container-fluid">    
+    <div class="row content">
+      <div class="col-sm-4 sidenav">
+        <div class="coeff">
+          <p class="formInfo">Coefficients go here<br>
 
-}  // close QF
-
-function results() {
-  // finding vertex and displaying symline and yint results
-  context.fillStyle="black";
-  vX = -(b*1)/(2*a);
-  vY = a*Math.pow(vX,2)+b*vX+c*1;
-  $("#yInt").text("The Y intercept is at (0,"+c+")");
-  $("#answers").show();
-  console.log(vX,vY);
-  $("#vertex").text("The vertex is at (" + vX+","+vY+")");
-  $("#vertexForm").text("Vertex Form is y = "+a+"(x-"+vX+")^2 + "+vY);
-  context.beginPath();
-  context.arc(w/2+vX*k,h/2-vY*k,5,0,6.28);
-  context.fill();
-  context.fillStyle="purple";
-  context.beginPath();
-  context.arc(w/2,h/2-c*k,5,0,6.28);
-  context.fill();
-  context.strokeStyle="black";
-  context.beginPath();
-  context.setLineDash([k,k]);
-  context.moveTo(w/2+vX*k, 0);
-  context.lineTo(w/2+vX*k, h);
-  context.stroke();0
-  context.setLineDash([k,0]);
-
-}  // close results()
-
-function solutions() {
-  // qudratic formula
-  d = Math.pow(b*1,2)-4*a*c;
-  if (d<0) {
-    $("#solution1").text("The solutions are imaginary (no x-intercepts).");
-    $("#rootText").text("");
-    $("#solution2").text("");
-  }
-  else{
-    // the quadratic formula needs to be typed before assiging x1 and x2
-    x1 = (-1*b+d**.5)/(2*a);
-    x2 = (-1*b-d**.5)/(2*a);
-    x1 = x1.toFixed(1);
-    x2 = x2.toFixed(1);
-    console.log(x1,x2);
-    if (x1 == x2) {
-      $("#rootText").text("The root is:");
-      $("#solution1").text("x = " + x1);
-      $("#solution2").text("");
-    }
-    else{
-      $("#rootText").text("The roots are:");
-      $("#solution1").text("x = " + x1);
-      $("#solution2").text("x = " + x2);
-    }
-    context.fillStyle="pink";
-    context.beginPath();
-    context.arc(w/2+x1*k,h/2,5,0,6.28);
-    context.arc(w/2+x2*k,h/2,5,0,6.28);
-    context.fill();
-
-  }  // close of the if-else
-
-}  //close solutions
-
-function graphQuad () {
-  for (var i = 0; i < w; i++) {
-    x = (w/2-i)/k;
-    y = c*1+b*x+a*Math.pow(x,2);
-    nx =  (w/2-(i+1))/k;
-    ny =  c*1+b*nx+a*Math.pow(nx,2);
-    context.beginPath();
-    context.lineWidth = 2;
-    context.strokeStyle = "Red";
-    context.moveTo(w/2+x*k, h/2-y*k);
-    context.lineTo(w/2+nx*k, h/2-ny*k);
-    context.stroke();
-  }
-}  // close graphQuad 
-
-function zoomIn() {
-
-  k = k + 2;
-  resestCanvas();
-
-}  // end zoomIN
-function zoomOut() {
-  if (k>4) {
-    k= k - 2;
-   resestCanvas();
- }
-
- 
-}  // end zoomOut
-function resestCanvas(){
-  context.clearRect(0,0,w,h);
-  grid();
-  graphQuad();
-  results();
-  solutions();
-}
-function doMouseMove(event) {
-    // always know where ther mouse is located
-     resestCanvas();
-    context.fillStyle="Red";
-    mouseX = event.clientX-offsetX;
-    mouseY = event.clientY-offsetY;
-    pointX = (mouseX-w/2)/k;
-    pointY = a*Math.pow(pointX,2)+b*pointX+c*1;
-    pointX =  pointX.toFixed(2);
-    pointY =  pointY.toFixed(2);
-    console.log(mouseX,mouseY, pointX, pointY, offsetY, offsetX);
-    context.beginPath();
-    context.arc(mouseX,(h/2-pointY*k),5,0,2*Math.PI);
-    context.fill(); 
-    $("#point").text("Point on the curve: ("+pointX+","+pointY+")");
-
-}  // end doMouseMove
+            a = <input size="5" type="text" id="quadA" value="1"> <br>
+            b = <input size="5" type="text" id="linB" value="0"> <br>
+            c = <input size="5" type="text" id="constant" value="0"> <br>
+          </p>
+          <button class="btn" onclick="QF()">Submit Values</button>
+        </div>  <!-- close coeff div -->
+        <div id="answers">
+        <div id="answersText">
+          <p id="vertex" class="AnswerWords"> </p>
+          <p id="yInt" class="AnswerWords"> </p>
+          <p id="rootText" class="AnswerWords"> </p>
+          <p id="solution1" class="AnswerWords"> </p>
+          <p id="solution2" class="AnswerWords"> </p>
+          <p id="point" class="AnswerWords"> </p>
+          </div>
+          <button type="button" class="btn btnsmall" onclick="zoomIn()">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>
+          <button type="button" class="btn btnsmall" onclick="zoomOut()">
+            <span class="glyphicon glyphicon-minus"></span>
+          </button>
+          
+        </div>
+      </div>
+      <div class="col-sm-8"> 
+        <canvas class="canvasGrids" id="mycanvas"></canvas>
+      </div>
+    </div>
+  </div>
+</body>
+</html>/
